@@ -50,6 +50,7 @@ export function StyleLibraryModal({
   const ref = useModalA11y(open, onClose)
   const [focusId, setFocusId] = useState<string | null>(currentStyleId)
   const [tuning, setTuning] = useState<TuningValues>({})
+  const [previewId, setPreviewId] = useState<string | null>(null)
   const [category, setCategory] = useState<StyleCategory | 'all'>('all')
   const [impression, setImpression] = useState<string | null>(null)
   const [colorTone, setColorTone] = useState<string | null>(null)
@@ -104,9 +105,12 @@ export function StyleLibraryModal({
     setSearch('')
   }
 
+  const previewStyle = getPreset(previewId)
+
   if (!open) return null
 
   return (
+    <>
     <div className="su-overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <div
         className="su-modal su-modal--library"
@@ -210,18 +214,37 @@ export function StyleLibraryModal({
 
             <div className="su-cards">
               {filtered.map((p) => (
-                <button
+                <div
                   key={p.id}
-                  type="button"
                   className={`su-card${focusId === p.id ? ' is-focus' : ''}${
                     currentStyleId === p.id ? ' is-current' : ''
                   }`}
+                  role="button"
+                  tabIndex={0}
+                  aria-pressed={focusId === p.id}
                   onClick={() => setFocusId(p.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      setFocusId(p.id)
+                    }
+                  }}
                 >
                   <span className="su-card__thumb" style={{ background: p.thumbnailClass }}>
                     {currentStyleId === p.id && (
                       <span className="su-card__current"><Icon name="check" size={14} filled />選択中</span>
                     )}
+                    <button
+                      type="button"
+                      className="su-card__zoom"
+                      aria-label={`${p.name} のプレビューを拡大`}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setPreviewId(p.id)
+                      }}
+                    >
+                      <Icon name="visibility" size={20} filled />
+                    </button>
                   </span>
                   <span className="su-card__name">{p.name}</span>
                   <span className="su-card__desc">{p.description}</span>
@@ -231,7 +254,7 @@ export function StyleLibraryModal({
                       <span key={t} className="su-tag">{t}</span>
                     ))}
                   </span>
-                </button>
+                </div>
               ))}
               {filtered.length === 0 && (
                 <p className="su-muted su-cards__empty">条件に合う世界観がありません。</p>
@@ -243,7 +266,15 @@ export function StyleLibraryModal({
           <aside className="su-library__detail">
             {focused ? (
               <div className="su-detail__scroll">
-                <span className="su-detail__thumb" style={{ background: focused.thumbnailClass }} />
+                <button
+                  type="button"
+                  className="su-detail__thumb"
+                  style={{ background: focused.thumbnailClass }}
+                  aria-label={`${focused.name} のプレビューを拡大`}
+                  onClick={() => setPreviewId(focused.id)}
+                >
+                  <span className="su-detail__zoom"><Icon name="visibility" size={20} filled /></span>
+                </button>
                 <h3 className="su-detail__name">{focused.name}</h3>
                 <p className="su-detail__en">{focused.nameEn}</p>
                 <p className="su-detail__desc">{focused.description}</p>
@@ -341,5 +372,26 @@ export function StyleLibraryModal({
         </div>
       </div>
     </div>
+
+    {/* サムネ拡大プレビュー（ライトボックス） */}
+    {previewStyle && (
+      <div
+        className="su-overlay su-lightbox"
+        onMouseDown={(e) => e.target === e.currentTarget && setPreviewId(null)}
+      >
+        <div className="su-lightbox__inner" role="dialog" aria-modal="true" aria-label={`${previewStyle.name} プレビュー`}>
+          <button type="button" className="su-iconbtn" aria-label="閉じる" onClick={() => setPreviewId(null)}>
+            <Icon name="close" size={22} />
+          </button>
+          <div className="su-lightbox__thumb" style={{ background: previewStyle.thumbnailClass }} />
+          <div className="su-lightbox__meta">
+            <h3 className="su-lightbox__name">{previewStyle.name}</h3>
+            <p className="su-lightbox__en">{previewStyle.nameEn}</p>
+            <p className="su-lightbox__desc">{previewStyle.description}</p>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   )
 }
