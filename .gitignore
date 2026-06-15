@@ -1,0 +1,22 @@
+# deps / build
+node_modules
+dist
+
+# 旧アプリ・退避物（アプリ動作に不要）
+src_legacy
+_legacy_assets
+*.bak
+
+# 内部ドキュメント・素材（公開リポジトリに載せない）
+/data
+DEVLOG.md
+LEARNING.md
+DESIGN_KNOWLEDGE.md
+
+.DS_Store
+
+# 旧quiz画像（未使用）
+assets
+
+# workflowスコープ付与後に追跡する
+.github/workflows/

@@ -1,0 +1,82 @@
+/* SLIDE UNIVERSE — カラートークン & ベース（デザインレギュレーション §11,§12） */
+
+:root {
+  --color-bg: #f7f8fb;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f8f7ff;
+  --color-text: #111827;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-border-strong: #c7d2fe;
+  --color-primary: #5b5cf0;
+  --color-primary-dark: #4338ca;
+  --color-primary-2: #0ea5e9;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --shadow-card: 0 12px 30px rgba(15, 23, 42, 0.06);
+  --shadow-pop: 0 24px 60px rgba(15, 23, 42, 0.18);
+  --radius-card: 18px;
+  --radius-control: 12px;
+
+  --font-base: 'Noto Sans JP', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-base);
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  height: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
+  direction: ltr;
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  vertical-align: middle;
+}
+
+/* スクロールバーを控えめに */
+.su-preview__scroll::-webkit-scrollbar,
+.su-questions::-webkit-scrollbar,
+.su-detail__scroll::-webkit-scrollbar,
+.su-cards::-webkit-scrollbar,
+.su-drawer__scroll::-webkit-scrollbar,
+.su-prompt-text::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.su-preview__scroll::-webkit-scrollbar-thumb,
+.su-questions::-webkit-scrollbar-thumb,
+.su-detail__scroll::-webkit-scrollbar-thumb,
+.su-cards::-webkit-scrollbar-thumb,
+.su-drawer__scroll::-webkit-scrollbar-thumb,
+.su-prompt-text::-webkit-scrollbar-thumb {
+  background: #d6d9e4;
+  border-radius: 999px;
+}
