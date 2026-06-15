@@ -21,4 +21,4 @@ React 18 + TypeScript + Vite。クライアント完結の静的SPA。
 ## デプロイ
 
 `main` への push で GitHub Actions が自動ビルド＆ GitHub Pages へ公開（`.github/workflows/deploy.yml`）。
-公開URL: https://slide.teklife.jp
+公開URL: https://slideuniverse.teklife.jp
