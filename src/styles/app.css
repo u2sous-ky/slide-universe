@@ -1351,10 +1351,12 @@
 /* 出力の濃さ: 選択=塗りつぶし */
 .su-top .su-depth { background: rgba(255, 255, 255, 0.05); }
 .su-top .su-depth.is-selected {
-  background: linear-gradient(135deg, rgba(109, 110, 252, 0.9), rgba(79, 70, 229, 0.9));
+  background: linear-gradient(135deg, #6d6efc 0%, #4f46e5 100%);
   border-color: transparent;
+  color: #fff;
 }
-.su-top .su-depth.is-selected .su-depth__hint { color: rgba(255, 255, 255, 0.85); }
+.su-top .su-depth.is-selected .su-depth__label { color: #fff; }
+.su-top .su-depth.is-selected .su-depth__hint { color: rgba(255, 255, 255, 0.88); }
 
 /* プレビューカード */
 .su-top .su-pcard {
