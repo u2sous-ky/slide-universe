@@ -1453,3 +1453,39 @@
   color: rgba(255, 255, 255, 0.82);
 }
 .su-help-pop__body strong { color: #cdd2ff; font-weight: 700; }
+
+/* ===== Q5 未選択時の見せ札（ランダム4サムネ＋CTA） ===== */
+.su-style-teaser {
+  width: 100%;
+  border: 1.5px dashed rgba(167, 139, 250, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-control);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.12s ease, background 0.12s ease;
+}
+.su-style-teaser:hover {
+  border-color: rgba(167, 139, 250, 0.85);
+  background: rgba(255, 255, 255, 0.08);
+}
+.su-style-teaser__thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.su-style-teaser__thumb {
+  aspect-ratio: 16 / 9;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.su-style-teaser__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #c7cbff;
+}

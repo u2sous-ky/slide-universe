@@ -1,10 +1,10 @@
 // トップページ左カラム — 6つの設問（デザイン §3）
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Icon } from './Icon'
 import type { BuilderApi } from '../hooks/useBuilderState'
 import { USE_CASES, GOALS, IMPRESSIONS, OUTPUT_DEPTHS } from '../data/questions'
-import { getPreset, thumbBg } from '../data/stylePresets'
+import { getPreset, thumbBg, STYLE_PRESETS } from '../data/stylePresets'
 
 interface QuestionPanelProps {
   api: BuilderApi
@@ -67,6 +67,11 @@ function Section({ icon, step, title, hint, help, children }: SectionProps) {
 export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
   const { state } = api
   const selectedStyle = getPreset(state.styleId)
+  // 未選択時の見せ札（ランダム4枚・セッション中は固定）
+  const teaser = useMemo(
+    () => [...STYLE_PRESETS].sort(() => Math.random() - 0.5).slice(0, 4),
+    [],
+  )
 
   return (
     <div className="su-questions">
@@ -173,9 +178,20 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
             </button>
           </div>
         ) : (
-          <button type="button" className="su-style-empty" onClick={onOpenLibrary}>
-            <Icon name="palette" size={20} />
-            すべての世界観を見る
+          <button type="button" className="su-style-teaser" onClick={onOpenLibrary}>
+            <span className="su-style-teaser__thumbs" aria-hidden="true">
+              {teaser.map((p) => (
+                <span
+                  key={p.id}
+                  className="su-style-teaser__thumb"
+                  style={{ background: thumbBg(p) }}
+                />
+              ))}
+            </span>
+            <span className="su-style-teaser__cta">
+              <Icon name="palette" size={18} />
+              すべての世界観を見る（{STYLE_PRESETS.length}スタイル）
+            </span>
           </button>
         )}
       </Section>
