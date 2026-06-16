@@ -36,12 +36,13 @@ body {
   font-family: var(--font-base);
   background-color: var(--color-bg);
   /* 宇宙背景（ダーク・つよめ）: 深い青紫の星雲グラデ。星はbody::before/::afterで揺らめかせる */
+  /* ネビュラはロゴ配色に準拠: 青(#6aa6ff)→紫(#a877f0)→マゼンタ(#f078c8)を対角に流す */
   background-image:
-    radial-gradient(1200px 820px at 10% -8%, rgba(91, 92, 240, 0.2), transparent 60%),
-    radial-gradient(1100px 760px at 104% 18%, rgba(217, 70, 239, 0.16), transparent 60%),
-    radial-gradient(1000px 760px at 55% 115%, rgba(14, 165, 233, 0.14), transparent 62%),
-    radial-gradient(700px 600px at 82% 82%, rgba(124, 58, 237, 0.14), transparent 60%),
-    linear-gradient(140deg, #030210 0%, #08051c 48%, #0a0414 100%);
+    radial-gradient(1200px 840px at 6% -10%, rgba(106, 166, 255, 0.22), transparent 60%),
+    radial-gradient(1150px 820px at 62% 42%, rgba(168, 119, 240, 0.16), transparent 62%),
+    radial-gradient(1050px 780px at 100% 112%, rgba(240, 120, 200, 0.2), transparent 60%),
+    radial-gradient(620px 560px at 98% 12%, rgba(168, 119, 240, 0.12), transparent 60%),
+    linear-gradient(140deg, #040312 0%, #0a0620 48%, #100622 100%);
   background-attachment: fixed;
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
