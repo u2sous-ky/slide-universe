@@ -3,7 +3,7 @@
 import { Icon } from './Icon'
 import type { BuilderApi } from '../hooks/useBuilderState'
 import { USE_CASES, GOALS, IMPRESSIONS, OUTPUT_DEPTHS } from '../data/questions'
-import { getPreset } from '../data/stylePresets'
+import { getPreset, thumbBg } from '../data/stylePresets'
 
 interface QuestionPanelProps {
   api: BuilderApi
@@ -119,7 +119,7 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
           <div className="su-style-selected">
             <span
               className="su-style-selected__thumb"
-              style={{ background: selectedStyle.thumbnailClass }}
+              style={{ background: thumbBg(selectedStyle) }}
               aria-hidden="true"
             />
             <div className="su-style-selected__meta">

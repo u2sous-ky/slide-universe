@@ -5,7 +5,7 @@ import { Fragment } from 'react'
 import { Icon } from './Icon'
 import type { BuilderApi } from '../hooks/useBuilderState'
 import { findUseCase, labelOf, GOALS, IMPRESSIONS, OUTPUT_DEPTHS } from '../data/questions'
-import { getPreset } from '../data/stylePresets'
+import { getPreset, thumbBg } from '../data/stylePresets'
 import { getReadiness, getRemainingCount, isReadyToGenerate } from '../lib/validation'
 import { STANDARD_QUALITY_RULES } from '../lib/promptCompiler'
 
@@ -102,7 +102,7 @@ export function PreviewPanel({ api, onGenerate, onOpenDetail }: PreviewPanelProp
             <div className="su-pstyle">
               <span
                 className="su-pstyle__thumb"
-                style={{ background: style.thumbnailClass }}
+                style={{ background: thumbBg(style) }}
                 aria-hidden="true"
               />
               <div>

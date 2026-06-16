@@ -12,6 +12,7 @@ import {
   allImpressions,
   allColorTones,
   getPreset,
+  thumbBg,
 } from '../data/stylePresets'
 import type { StyleCategory, StylePreset, Tendency } from '../lib/types'
 
@@ -230,7 +231,7 @@ export function StyleLibraryModal({
                     }
                   }}
                 >
-                  <span className="su-card__thumb" style={{ background: p.thumbnailClass }}>
+                  <span className="su-card__thumb" style={{ background: thumbBg(p) }}>
                     {currentStyleId === p.id && (
                       <span className="su-card__current"><Icon name="check" size={14} filled />選択中</span>
                     )}
@@ -269,7 +270,7 @@ export function StyleLibraryModal({
                 <button
                   type="button"
                   className="su-detail__thumb"
-                  style={{ background: focused.thumbnailClass }}
+                  style={{ background: thumbBg(focused) }}
                   aria-label={`${focused.name} のプレビューを拡大`}
                   onClick={() => setPreviewId(focused.id)}
                 >
@@ -383,7 +384,7 @@ export function StyleLibraryModal({
           <button type="button" className="su-iconbtn" aria-label="閉じる" onClick={() => setPreviewId(null)}>
             <Icon name="close" size={22} />
           </button>
-          <div className="su-lightbox__thumb" style={{ background: previewStyle.thumbnailClass }} />
+          <div className="su-lightbox__thumb" style={{ background: thumbBg(previewStyle) }} />
           <div className="su-lightbox__meta">
             <h3 className="su-lightbox__name">{previewStyle.name}</h3>
             <p className="su-lightbox__en">{previewStyle.nameEn}</p>

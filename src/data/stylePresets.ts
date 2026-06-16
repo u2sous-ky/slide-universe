@@ -526,7 +526,158 @@ const EXTRA_PRESETS: StylePreset[] = [
   },
 ]
 
-export const STYLE_PRESETS: StylePreset[] = [...BASE_PRESETS, ...EXTRA_PRESETS]
+// ── 追加プリセット第2弾（ユーザー指定＋LEARNING/DESIGN_KNOWLEDGEから厳選）──
+const NEW_PRESETS: StylePreset[] = [
+  // ── immersive ──
+  {
+    id: 'manga-comic',
+    name: '漫画・コミック',
+    nameEn: 'Manga Comic',
+    category: 'immersive',
+    description: '白黒インクの漫画表現。集中線とコマ割りで感情とスピードを伝える。',
+    thumbnailClass: 'linear-gradient(135deg, #ffffff 0%, #cfcfcf 50%, #111111 100%)',
+    tags: ['漫画', 'インク', 'コマ割り'],
+    impressions: ['大胆', 'エネルギッシュ', '革新'],
+    colorTones: ['モノクロ', 'アクセント単色'],
+    suitableFor: ['ストーリーで惹きつけたい時', '若年層・エンタメ', '感情に訴える訴求'],
+    unsuitableFor: ['厳格なデータ資料', '落ち着いた高級感'],
+    tendencies: { reliability: 'low', visualPriority: 'high', dataCompatibility: 'low', textAmount: 'low' },
+    tuning: [contrastTuning(75), brandColorTuning('#D7263D')],
+    brandColor: '#D7263D',
+    promptBlock: STYLE_PROMPT_BLOCKS_MANUAL['manga-comic'],
+  },
+  {
+    id: 'voxel-craft',
+    name: 'ボクセル・クラフト',
+    nameEn: 'Voxel Craft',
+    category: 'immersive',
+    description: 'すべてが立方体の3D世界。ゲーム的なワクワク感で構造を見せる。',
+    thumbnailClass: 'linear-gradient(135deg, #7ec8e3 0%, #a3e635 55%, #f59e0b 100%)',
+    tags: ['ボクセル', '3Dブロック', 'ゲーム'],
+    impressions: ['エネルギッシュ', '温かさ', '革新', '大胆'],
+    colorTones: ['カラフル', 'ビビッド', 'ライト'],
+    suitableFor: ['子ども・教育', 'ゲーム・エンタメ', '楽しく構造を見せる'],
+    unsuitableFor: ['高級感・落ち着き', '厳格な法人資料'],
+    tendencies: { reliability: 'low', visualPriority: 'high', dataCompatibility: 'medium', textAmount: 'low' },
+    tuning: [depthTuning(70), brightnessTuning(60), brandColorTuning('#7EC8E3')],
+    brandColor: '#7EC8E3',
+    promptBlock: STYLE_PROMPT_BLOCKS_MANUAL['voxel-craft'],
+  },
+
+  // ── editorial ──
+  {
+    id: 'greek-collage',
+    name: 'ギリシャ彫刻コラージュ',
+    nameEn: 'Greek Sculpture Collage',
+    category: 'editorial',
+    description: '白い古典彫像 × コミカルな編集コラージュ。知性とユーモアの衝突。',
+    thumbnailClass: 'linear-gradient(135deg, #f5f3ee 0%, #d9d4c7 55%, #b5651d 100%)',
+    tags: ['古典彫刻', 'コラージュ', 'アート'],
+    impressions: ['知的・構造的', '高級感', '大胆', '革新'],
+    colorTones: ['モノクロ', 'ライト', 'アクセント単色'],
+    suitableFor: ['アート・教養系', '機知で記憶に残す', 'AI・知の文脈'],
+    unsuitableFor: ['堅実なデータ報告', '賑やかなポップ'],
+    tendencies: { reliability: 'medium', visualPriority: 'high', dataCompatibility: 'low', textAmount: 'low' },
+    tuning: [contrastTuning(55), marginTuning(65), brandColorTuning('#B5651D')],
+    brandColor: '#B5651D',
+    promptBlock: STYLE_PROMPT_BLOCKS_MANUAL['greek-collage'],
+  },
+  {
+    id: 'vogue-white',
+    name: 'Vogue・ホワイト',
+    nameEn: 'Vogue White',
+    category: 'editorial',
+    description: '白い無限背景のハイファッション。贅沢な余白と上質な光。',
+    thumbnailClass: 'linear-gradient(135deg, #ffffff 0%, #efe9e3 55%, #d7263d 100%)',
+    tags: ['ファッション', '白基調', 'ラグジュアリー'],
+    impressions: ['高級感', 'ミニマル', '大胆', '知的・構造的'],
+    colorTones: ['ライト', 'モノクロ', 'アクセント単色'],
+    suitableFor: ['ファッション・ビューティー', '高級ブランド', '上質に魅せたい時'],
+    unsuitableFor: ['親しみやすいポップ', '高密度データ'],
+    tendencies: { reliability: 'medium', visualPriority: 'high', dataCompatibility: 'low', textAmount: 'low' },
+    tuning: [brightnessTuning(65), marginTuning(75), brandColorTuning('#D7263D')],
+    brandColor: '#D7263D',
+    promptBlock: STYLE_PROMPT_BLOCKS_MANUAL['vogue-white'],
+  },
+  {
+    id: 'blue-note-jazz',
+    name: 'ブルーノート・ジャズ',
+    nameEn: 'Blue Note Jazz',
+    category: 'editorial',
+    description: 'ジャズLPジャケット風。2色制限と非対称タイポ、大胆クロップ写真。',
+    thumbnailClass: 'linear-gradient(135deg, #14213d 0%, #1d3557 55%, #e09f3e 100%)',
+    tags: ['ジャズ', '2色', 'タイポグラフィ'],
+    impressions: ['高級感', '大胆', '知的・構造的', '革新'],
+    colorTones: ['アクセント単色', 'モノクロ', 'ダーク'],
+    suitableFor: ['音楽・カルチャー', '洒脱に見せたい時', 'ブランドの個性'],
+    unsuitableFor: ['多色で賑やか', '高密度データ'],
+    tendencies: { reliability: 'medium', visualPriority: 'high', dataCompatibility: 'low', textAmount: 'low' },
+    tuning: [contrastTuning(70), marginTuning(60), brandColorTuning('#E09F3E')],
+    brandColor: '#E09F3E',
+    promptBlock: STYLE_PROMPT_BLOCKS_MANUAL['blue-note-jazz'],
+  },
+
+  // ── structure ──
+  {
+    id: 'soviet-construct',
+    name: 'ソビエト構成主義',
+    nameEn: 'Soviet Constructivism',
+    category: 'structure',
+    description: '赤い斜めの力線と幾何学、写真モンタージュ。革命的なエネルギーと秩序。',
+    thumbnailClass: 'linear-gradient(135deg, #f5f1e6 0%, #111111 55%, #d7263d 100%)',
+    tags: ['構成主義', '対角線', 'プロパガンダ'],
+    impressions: ['大胆', 'エネルギッシュ', '知的・構造的', '革新'],
+    colorTones: ['原色', 'アクセント単色', 'モノクロ'],
+    suitableFor: ['力強い主張・宣言', '変革のメッセージ', 'インパクト重視'],
+    unsuitableFor: ['穏やか・親しみ', '繊細な高級感'],
+    tendencies: { reliability: 'medium', visualPriority: 'high', dataCompatibility: 'medium', textAmount: 'low' },
+    tuning: [contrastTuning(80), marginTuning(50), brandColorTuning('#D7263D')],
+    brandColor: '#D7263D',
+    promptBlock: STYLE_PROMPT_BLOCKS_MANUAL['soviet-construct'],
+  },
+
+  // ── soft ──
+  {
+    id: 'ghibli-nature',
+    name: 'ジブリ風ネイチャー',
+    nameEn: 'Ghibli Nature',
+    category: 'soft',
+    description: '手描きアニメ背景美術風。やわらかな光と自然の息づかい、ノスタルジー。',
+    thumbnailClass: 'linear-gradient(135deg, #aee0f5 0%, #9bcf7a 55%, #f2b85a 100%)',
+    tags: ['手描き', '自然', 'ノスタルジー'],
+    impressions: ['温かさ', '高級感'],
+    colorTones: ['カラフル', '暖色', '寒色', 'ライト'],
+    suitableFor: ['情緒・物語で惹きつけたい', 'ウェルネス・環境・教育', '余韻を残す'],
+    unsuitableFor: ['硬派なデータ資料', 'クールなテック'],
+    tendencies: { reliability: 'low', visualPriority: 'high', dataCompatibility: 'low', textAmount: 'low' },
+    tuning: [brightnessTuning(60), marginTuning(65), brandColorTuning('#9BCF7A')],
+    brandColor: '#9BCF7A',
+    promptBlock: STYLE_PROMPT_BLOCKS_MANUAL['ghibli-nature'],
+  },
+  {
+    id: 'risograph-retro',
+    name: 'リソグラフ・レトロ',
+    nameEn: 'Risograph Retro',
+    category: 'soft',
+    description: '孔版印刷の温かみ。版ズレと粒状感、限定スポットカラーのZINE感。',
+    thumbnailClass: 'linear-gradient(135deg, #ff6f91 0%, #6a8eae 55%, #ffd23f 100%)',
+    tags: ['リソグラフ', 'スポットカラー', 'ZINE'],
+    impressions: ['温かさ', '革新', 'エネルギッシュ', '大胆'],
+    colorTones: ['ビビッド', 'パステル', 'カラフル'],
+    suitableFor: ['インディー・クリエイティブ', '親しみとセンスの両立', 'イベント・カルチャー'],
+    unsuitableFor: ['厳格な法人・データ', '高精細な写実'],
+    tendencies: { reliability: 'low', visualPriority: 'high', dataCompatibility: 'low', textAmount: 'low' },
+    tuning: [contrastTuning(55), brandColorTuning('#FF6F91')],
+    brandColor: '#FF6F91',
+    promptBlock: STYLE_PROMPT_BLOCKS_MANUAL['risograph-retro'],
+  },
+]
+
+export const STYLE_PRESETS: StylePreset[] = [
+  ...BASE_PRESETS,
+  ...EXTRA_PRESETS,
+  ...NEW_PRESETS,
+]
 
 export const CATEGORY_LABELS: Record<StyleCategory, string> = {
   structure: '構造・グリッド',
@@ -546,6 +697,14 @@ export const CATEGORY_ORDER: StyleCategory[] = [
 
 export function getPreset(id: string | null): StylePreset | undefined {
   return STYLE_PRESETS.find((p) => p.id === id)
+}
+
+/**
+ * サムネ背景。/thumbs/<id>.png を最前面、プリセットのグラデーションを背面に重ねる。
+ * 画像が未生成（404）の場合は自動でグラデーションにフォールバックする。
+ */
+export function thumbBg(preset: StylePreset): string {
+  return `url("/thumbs/${preset.id}.png") center / cover no-repeat, ${preset.thumbnailClass}`
 }
 
 /** プリセット群から印象タグの一覧を抽出（ライブラリの絞り込み用） */
