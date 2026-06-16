@@ -70,7 +70,7 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
 
   return (
     <div className="su-questions">
-      <Section icon="description" step={1} title="何の資料を作りますか？">
+      <Section icon="description" step={1} title="どんな資料を作りますか？">
         <div className="su-chips">
           {USE_CASES.map((u) => (
             <button
@@ -102,7 +102,19 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
         />
       </Section>
 
-      <Section icon="flag" step={3} title="見た後、どう動いてほしいですか？">
+      <Section
+        icon="flag"
+        step={3}
+        title="プレゼンのゴールは？"
+        help={
+          <>
+            このプレゼンを見た人に<strong>最終的に取ってほしい行動</strong>を選びます。すべてのスライドはこのゴールに向けて設計されます。
+            <br />
+            <br />
+            例：問い合わせ・申し込み・社内の合意・深い納得・記憶に残す・次の一歩 など。
+          </>
+        }
+      >
         <div className="su-chips">
           {GOALS.map((g) => (
             <button
