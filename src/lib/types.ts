@@ -2,11 +2,13 @@
 // コーディングレギュレーション §4, §11 準拠
 
 export type StyleCategory =
-  | 'structure'
   | 'business'
+  | 'structure'
   | 'editorial'
-  | 'soft'
+  | 'collage'
+  | 'pop'
   | 'immersive'
+  | 'soft'
 
 export type Tendency = 'low' | 'medium' | 'high'
 
