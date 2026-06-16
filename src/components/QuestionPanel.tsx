@@ -89,7 +89,7 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
       <Section
         icon="groups"
         step={2}
-        title="誰に見せますか？"
+        title="ターゲットはどんな人ですか？"
         hint="5文字以上"
       >
         <input
