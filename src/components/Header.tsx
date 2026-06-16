@@ -37,7 +37,6 @@ export function Header({ onHelp }: HeaderProps) {
         </span>
         <div className="su-header__titles">
           <h1 className="su-header__title">SLIDE UNIVERSE</h1>
-          <p className="su-header__subtitle">伝わる構造と、惹き込む世界観をつくる。</p>
         </div>
       </div>
       <button type="button" className="su-btn su-btn--ghost" onClick={onHelp}>

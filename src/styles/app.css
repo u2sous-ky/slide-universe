@@ -1287,3 +1287,110 @@
     border-right: none;
   }
 }
+
+/* ===== TopPage: 宇宙ダークグラス（.su-top配下のみ。モーダルは対象外） ===== */
+.su-top {
+  --color-text: #eef1fb;
+  --color-muted: rgba(238, 241, 251, 0.62);
+  --color-surface: rgba(255, 255, 255, 0.06);
+  --color-surface-soft: rgba(255, 255, 255, 0.09);
+  --color-border: rgba(255, 255, 255, 0.14);
+  --color-border-strong: rgba(167, 139, 250, 0.6);
+}
+
+/* パネル＝フロステッドダークグラス（星空が透ける） */
+.su-top .su-q,
+.su-top .su-preview {
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 40px rgba(5, 4, 20, 0.35);
+}
+.su-top .su-preview__head,
+.su-top .su-preview__footer {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 見出し・バッジ・アイコン */
+.su-top .su-q__icon { color: #bcbcff; }
+.su-top .su-q__step {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: transparent;
+  color: #cdd2ff;
+}
+.su-top .su-pcard__head { color: #bcbcff; }
+
+/* チップ: 未選択=透過アウトライン / 選択=塗りつぶし */
+.su-top .su-chip {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.su-top .su-chip:hover:not(:disabled) { border-color: rgba(255, 255, 255, 0.42); }
+.su-top .su-chip.is-selected {
+  background: linear-gradient(135deg, #6d6efc 0%, #4f46e5 100%);
+  border-color: transparent;
+  color: #ffffff;
+}
+
+/* 入力 */
+.su-top .su-input,
+.su-top .su-textarea {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--color-text);
+}
+.su-top .su-input::placeholder,
+.su-top .su-textarea::placeholder { color: rgba(255, 255, 255, 0.4); }
+
+/* 世界観 未選択ボタン */
+.su-top .su-style-empty {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(167, 139, 250, 0.5);
+  color: #c7cbff;
+}
+
+/* 出力の濃さ: 選択=塗りつぶし */
+.su-top .su-depth { background: rgba(255, 255, 255, 0.05); }
+.su-top .su-depth.is-selected {
+  background: linear-gradient(135deg, rgba(109, 110, 252, 0.9), rgba(79, 70, 229, 0.9));
+  border-color: transparent;
+}
+.su-top .su-depth.is-selected .su-depth__hint { color: rgba(255, 255, 255, 0.85); }
+
+/* プレビューカード */
+.su-top .su-pcard {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.su-top .su-pcard.is-active {
+  background: rgba(124, 92, 240, 0.14);
+  border-color: rgba(167, 139, 250, 0.45);
+}
+.su-top .su-pcard__badge {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ストーリーarc / タグ */
+.su-top .su-arc__step {
+  background: rgba(124, 92, 240, 0.22);
+  border-color: rgba(167, 139, 250, 0.4);
+}
+.su-top .su-arc__label { color: #e3e3ff; }
+.su-top .su-arc__sep { color: rgba(255, 255, 255, 0.4); }
+.su-top .su-tag { background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.72); }
+.su-top .su-tag--cat { background: rgba(124, 92, 240, 0.3); color: #d6d8ff; }
+
+/* 詳細設定ボタン */
+.su-top .su-rules-detail {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.su-top .su-rules-detail:hover { border-color: rgba(255, 255, 255, 0.35); color: #fff; }
+
+/* 生成ボタン(未充足) */
+.su-top .su-btn--primary:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+}
