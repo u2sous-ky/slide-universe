@@ -1290,22 +1290,23 @@
 
 /* ===== TopPage: 宇宙ダークグラス（.su-top配下のみ。モーダルは対象外） ===== */
 .su-top {
-  --color-text: #eef1fb;
-  --color-muted: rgba(238, 241, 251, 0.62);
-  --color-surface: rgba(255, 255, 255, 0.06);
-  --color-surface-soft: rgba(255, 255, 255, 0.09);
-  --color-border: rgba(255, 255, 255, 0.14);
-  --color-border-strong: rgba(167, 139, 250, 0.6);
+  --color-text: #f4f6ff;
+  --color-muted: rgba(244, 246, 255, 0.74);
+  --color-surface: rgba(255, 255, 255, 0.08);
+  --color-surface-soft: rgba(255, 255, 255, 0.12);
+  --color-border: rgba(255, 255, 255, 0.18);
+  --color-border-strong: rgba(167, 139, 250, 0.65);
+  color: var(--color-text); /* 重要: 子孫が明色を継承（見出しの文字化け防止） */
 }
 
-/* パネル＝フロステッドダークグラス（星空が透ける） */
+/* パネル＝ダークグラス（暗い半透明。文字の可読性を確保しつつ星空が透ける） */
 .su-top .su-q,
 .su-top .su-preview {
-  background: rgba(255, 255, 255, 0.055);
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  background: rgba(12, 10, 32, 0.52);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 16px 40px rgba(5, 4, 20, 0.35);
+  box-shadow: 0 16px 40px rgba(3, 2, 16, 0.45);
 }
 .su-top .su-preview__head,
 .su-top .su-preview__footer {

@@ -40,7 +40,7 @@ export function Starfield() {
       canvas.style.height = `${h}px`
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
       // 密度: アンドロメダ星群のように非常に密に
-      const count = Math.round((w * h) / 2200)
+      const count = Math.round((w * h) / 1400)
       stars = Array.from({ length: count }, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
