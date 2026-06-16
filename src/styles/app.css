@@ -1348,8 +1348,11 @@
   color: #c7cbff;
 }
 
-/* 出力の濃さ: 選択=塗りつぶし */
-.su-top .su-depth { background: rgba(255, 255, 255, 0.05); }
+/* 出力の濃さ: 選択=塗りつぶし。button要素は色を継承しないため明示 */
+.su-top .su-depth {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+}
 .su-top .su-depth.is-selected {
   background: linear-gradient(135deg, #6d6efc 0%, #4f46e5 100%);
   border-color: transparent;
@@ -1394,3 +1397,59 @@
   background: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.5);
 }
+
+/* ===== 設問見出しの「？」ヘルプ・ポップオーバー ===== */
+.su-help-pop {
+  position: relative;
+  display: inline-flex;
+  margin-left: auto;
+}
+.su-help-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  display: grid;
+  place-items: center;
+}
+.su-help-btn:hover {
+  border-color: rgba(167, 139, 250, 0.7);
+  color: #fff;
+}
+.su-help-pop__catch {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+.su-help-pop__card {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  z-index: 41;
+  width: 300px;
+  max-width: 80vw;
+  text-align: left;
+  background: rgba(22, 19, 48, 0.98);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  border-radius: 14px;
+  padding: 13px 15px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+}
+.su-help-pop__title {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+.su-help-pop__body {
+  display: block;
+  font-size: 12px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.82);
+}
+.su-help-pop__body strong { color: #cdd2ff; font-weight: 700; }

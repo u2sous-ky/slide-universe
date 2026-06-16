@@ -1,5 +1,6 @@
 // トップページ左カラム — 6つの設問（デザイン §3）
 
+import { useState } from 'react'
 import { Icon } from './Icon'
 import type { BuilderApi } from '../hooks/useBuilderState'
 import { USE_CASES, GOALS, IMPRESSIONS, OUTPUT_DEPTHS } from '../data/questions'
@@ -10,15 +11,43 @@ interface QuestionPanelProps {
   onOpenLibrary: () => void
 }
 
+// 設問見出しの「？」→ ポップアップ説明
+function HelpPopover({ title, children }: { title: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <span className="su-help-pop">
+      <button
+        type="button"
+        className="su-help-btn"
+        aria-label={`${title}の説明`}
+        aria-expanded={open}
+        onClick={() => setOpen((v) => !v)}
+      >
+        <Icon name="help" size={15} />
+      </button>
+      {open && (
+        <>
+          <span className="su-help-pop__catch" onClick={() => setOpen(false)} aria-hidden="true" />
+          <span className="su-help-pop__card" role="dialog" aria-label={title}>
+            <span className="su-help-pop__title">{title}</span>
+            <span className="su-help-pop__body">{children}</span>
+          </span>
+        </>
+      )}
+    </span>
+  )
+}
+
 interface SectionProps {
   icon: string
   step: number
   title: string
   hint?: string
+  help?: React.ReactNode
   children: React.ReactNode
 }
 
-function Section({ icon, step, title, hint, children }: SectionProps) {
+function Section({ icon, step, title, hint, help, children }: SectionProps) {
   return (
     <section className="su-q">
       <div className="su-q__head">
@@ -28,6 +57,7 @@ function Section({ icon, step, title, hint, children }: SectionProps) {
         <span className="su-q__step">Q{step}</span>
         <h2 className="su-q__title">{title}</h2>
         {hint && <span className="su-q__hint">{hint}</span>}
+        {help && <HelpPopover title={title}>{help}</HelpPopover>}
       </div>
       <div className="su-q__body">{children}</div>
     </section>
@@ -138,7 +168,23 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
         )}
       </Section>
 
-      <Section icon="tune" step={6} title="出力の濃さを選びましょう">
+      <Section
+        icon="tune"
+        step={6}
+        title="出力の濃さを選びましょう"
+        help={
+          <>
+            生成するプロンプトの<strong>詳しさ</strong>を選びます。濃いほどプロンプトは長く、スライドへの指定が細かくなります。
+            <br />
+            <br />
+            <strong>要約プロンプト</strong>：構成と要点だけ。まず全体像をつかみたい時。
+            <br />
+            <strong>標準</strong>：各スライドの見出し・要点・ビジュアル方針までバランスよく。
+            <br />
+            <strong>制作指示レベル</strong>：コピー・ビジュアル・レイアウト・配色まで1枚ずつ詳細に指示。作り込みたい時。
+          </>
+        }
+      >
         <div className="su-depths">
           {OUTPUT_DEPTHS.map((d) => (
             <button
