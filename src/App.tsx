@@ -2,6 +2,7 @@
 // 画面は4つだけ: TopPage / StyleLibraryModal / DetailSettingsDrawer / GeneratedPromptModal
 
 import { useState } from 'react'
+import { Starfield } from './components/Starfield'
 import { Header } from './components/Header'
 import { QuestionPanel } from './components/QuestionPanel'
 import { PreviewPanel } from './components/PreviewPanel'
@@ -28,6 +29,7 @@ export default function App() {
 
   return (
     <div className="su-app">
+      <Starfield />
       <Header onHelp={() => setHelpOpen(true)} />
 
       <main className="su-top">

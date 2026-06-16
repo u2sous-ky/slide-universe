@@ -48,11 +48,12 @@
   font-size: 18px;
   font-weight: 800;
   letter-spacing: 0.04em;
+  color: #ffffff; /* 宇宙背景の上に乗るため明色 */
 }
 .su-header__subtitle {
   margin: 0;
   font-size: 12px;
-  color: var(--color-muted);
+  color: rgba(255, 255, 255, 0.66);
 }
 
 /* ── トップ2カラム ────────────────────────────────────── */
@@ -82,10 +83,13 @@
   gap: 14px;
 }
 .su-q {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  /* うっすら透過＋すりガラス。背面の星空が透ける（真っ白の重さを軽減） */
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 14px 34px rgba(8, 6, 25, 0.22);
   padding: 14px 16px;
 }
 .su-q__head {

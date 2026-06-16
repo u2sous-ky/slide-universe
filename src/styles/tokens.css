@@ -1,7 +1,7 @@
 /* SLIDE UNIVERSE — カラートークン & ベース（デザインレギュレーション §11,§12） */
 
 :root {
-  --color-bg: #f7f8fb;
+  --color-bg: #0b0a1f;
   --color-surface: #ffffff;
   --color-surface-soft: #f8f7ff;
   --color-text: #111827;
@@ -34,10 +34,26 @@ body {
 
 body {
   font-family: var(--font-base);
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  /* 宇宙背景（ダーク・つよめ）: 深い青紫の星雲グラデ。星はbody::before/::afterで揺らめかせる */
+  background-image:
+    radial-gradient(1200px 820px at 10% -8%, rgba(91, 92, 240, 0.38), transparent 60%),
+    radial-gradient(1100px 760px at 104% 18%, rgba(217, 70, 239, 0.30), transparent 60%),
+    radial-gradient(1000px 760px at 55% 115%, rgba(14, 165, 233, 0.26), transparent 60%),
+    radial-gradient(700px 600px at 80% 80%, rgba(124, 58, 237, 0.26), transparent 60%),
+    linear-gradient(140deg, #07061a 0%, #120a2e 45%, #1a0a26 100%);
+  background-attachment: fixed;
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+/* 星はCanvas（Starfieldコンポーネント）で密に瞬かせる。背景bodyは星雲グラデのみ。 */
+.su-stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
 }
 
 #root {
