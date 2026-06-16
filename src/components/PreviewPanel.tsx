@@ -123,7 +123,7 @@ export function PreviewPanel({ api, onGenerate, onOpenDetail }: PreviewPanelProp
           {rulesActive ? (
             <>
               <p className="su-rules__lead">
-                出力の濃さ「{depth?.label}」で、以下の品質ルールを自動適用します。
+                詳しさ「{depth?.label}」で、以下の品質ルールを自動適用します。
               </p>
               <ul className="su-rules">
                 {STANDARD_QUALITY_RULES.map((r) => (
@@ -132,7 +132,7 @@ export function PreviewPanel({ api, onGenerate, onOpenDetail }: PreviewPanelProp
               </ul>
             </>
           ) : (
-            <p className="su-muted">世界観と出力の濃さを選ぶと、品質ルールが確定します。</p>
+            <p className="su-muted">世界観と詳しさを選ぶと、品質ルールが確定します。</p>
           )}
           <button type="button" className="su-rules-detail" onClick={onOpenDetail}>
             <Icon name="settings" size={16} />

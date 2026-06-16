@@ -171,7 +171,7 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
       <Section
         icon="tune"
         step={6}
-        title="出力の濃さを選びましょう"
+        title="どのくらい詳しく作りますか？"
         help={
           <>
             生成するプロンプトの<strong>詳しさ</strong>を選びます。濃いほどプロンプトは長く、スライドへの指定が細かくなります。

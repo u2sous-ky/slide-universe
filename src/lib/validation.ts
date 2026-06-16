@@ -21,7 +21,7 @@ export function getReadiness(state: BuilderState): ReadinessItem[] {
       done: state.impressions.length >= 1 && state.impressions.length <= 3,
     },
     { key: 'styleId', label: '世界観', done: Boolean(state.styleId) },
-    { key: 'outputDepth', label: '出力の濃さ', done: Boolean(state.outputDepth) },
+    { key: 'outputDepth', label: '詳しさ', done: Boolean(state.outputDepth) },
   ]
 }
 
