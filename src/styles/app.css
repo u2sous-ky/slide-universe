@@ -28,22 +28,10 @@
   gap: 12px;
 }
 .su-header__logo {
-  height: 30px;
+  height: 38px;
   width: auto;
   display: block;
-}
-.su-logo {
-  width: 48px;
-  height: 48px;
-  display: grid;
-  place-items: center;
-  /* 惑星SVG自体がグラデ。背景の箱は無し（完全透過で惑星が浮く） */
-  filter: drop-shadow(0 2px 10px rgba(124, 92, 240, 0.5));
-}
-.su-header__logo {
-  height: 30px;
-  width: auto;
-  display: block;
+  filter: drop-shadow(0 2px 10px rgba(124, 92, 240, 0.4));
 }
 .su-header__titles {
   line-height: 1.25;
