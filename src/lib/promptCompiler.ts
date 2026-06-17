@@ -56,7 +56,12 @@ function buildInternalInstructionBlock(): string {
 
 function buildRoleBlock(state: BuilderState): string {
   const role = findUseCase(state.useCase)?.role ?? 'プレゼンテーションデザイナー兼編集者'
-  return ['【Role】', `あなたは ${role}。`, '選択された用途と世界観に合った視点で設計する。'].join('\n')
+  return [
+    '【Role】',
+    `あなたは、日本のトップメディアを牽引するアートディレクター兼${role}。`,
+    'スマホ世代の知的興奮を誘い、読み手が「今すぐ一歩動きたくなる」成果直結スライドを設計する。',
+    'きれいなだけのスライドではなく、人を動かすスライドを作る。凡庸・テンプレ・説明過多を最も嫌う。',
+  ].join('\n')
 }
 
 function buildGoalBlock(state: BuilderState): string {
@@ -64,17 +69,29 @@ function buildGoalBlock(state: BuilderState): string {
   return [
     '【Goal】',
     `・最優先はユーザーが入力したGoalの達成: 「${goal}」`,
-    '・きれいなスライドではなく、視聴者がGoalに向かって動きたくなるスライドを作る。',
+    '・全スライドはこのGoalに収束させる。きれいさより、Goalへ動きたくなるかで判断する。',
   ].join('\n')
 }
 
+// 出力の作り方（神経設計: 注意→感情→理解→行動）。元サンプルの「0)出力の作り方」を核に据える。
 function buildInformationTransformBlock(): string {
   return [
-    '【情報変換ロジック】',
-    '・資料からGoalに直結する要点を12〜18個抽出する（事実 / 主張 / 根拠 / 具体例 / 手順）。',
-    '・重複する話は統合する。曖昧な情報は条件付きで表現する。',
-    '・「注意 → 感情 → 理解 → 行動」の順に並べ替える。',
-    '・最後は必ず視聴者の次の一手で終える（具体・短い）。',
+    '【出力の作り方（この順で内部設計してから生成する）】',
+    'A. 抽出: 資料全体から、Goalに直結する要点だけを12〜18個抽出する（事実 / 主張 / 根拠 / 具体例 / 手順）。重複は統合し、曖昧な点は「条件付き」で表現する。',
+    'B. 変換: 要点を「注意 → 感情 → 理解 → 行動」の順に並べ替える。最後は必ず「視聴者が次にやる一手」で終える（具体的で短く）。',
+    'C. デッキ設計: 序盤＝違和感や問いで注意を奪い感情を刺す / 中盤＝最小限の図解で理解を構造化する / 終盤＝行動（次の一手・合意形成・問い合わせ導線）へ。同じレイアウトTYPEを3枚以上続けない。',
+    'D. 各スライドの原則: 1スライド1メッセージ（結論/問い/命名を1つだけ）。本文は最大2行、3行になるなら分割。見出しだけを追っても話と感情の抑揚が通る。',
+  ].join('\n')
+}
+
+// 比喩メタファーの統一（図解/イラスト系で効く・元サンプルの強力技法）
+function buildMetaphorBlock(style: StylePreset): string {
+  // 写真主役の編集系では比喩を強制しない（ビジュアル優先 high のイラスト/立体系で有効）
+  if (style.tendencies.visualPriority !== 'high') return ''
+  return [
+    '【比喩メタファー（図解・イラストを使う場合）】',
+    '・テーマから、最も直感的で自分ごと化しやすい比喩を1つだけ選ぶ（例: 都市 / 交通 / 料理 / 登山 / 工場 / 図書館 / ゲーム など）。',
+    '・以後の図解・モチーフはその比喩に統一し、世界観をブレさせない。比喩を通じて、テーマの価値とGoalへの道筋が一目で腑に落ちるようにする。',
   ].join('\n')
 }
 
@@ -82,9 +99,9 @@ function buildStoryArcBlock(state: BuilderState): string {
   const arc = findUseCase(state.useCase)?.storyArc ?? '注意 → 共感 → 理解 → 行動'
   return [
     '【Story Arc】',
-    `・全体の流れ: ${arc}`,
-    '・同じレイアウトTYPEを3枚以上続けない。強弱（リズム）を作る。',
-    '・見出しだけを追っても話が通るように設計する。',
+    `・用途に合わせた流れ: ${arc}`,
+    '・3〜4枚のかたまりで設計し、違和感 → 構造理解 → 行動 の強弱が「見出しだけ追っても分かる」ようにする。',
+    '・表紙（1枚目）はシリーズ中で最もインパクトを強く。文字だけで寂しいを禁止し、最初の1枚で視線と意識を奪う。',
   ].join('\n')
 }
 
@@ -224,13 +241,13 @@ function buildOutputFormatBlock(depth: OutputDepth | null, slideCount: string): 
       '  - Slide Number',
       '  - Role in Story',
       '  - Slide Type',
-      '  - Main Headline（日本語の言い切り）',
-      '  - Optional English Tag（1〜4語、任意）',
-      '  - Lead Text（最大2行）',
-      '  - Visual Direction（具体的な被写体・構図・コールアウト）',
-      '  - Layout Direction（グリッド・余白・配置）',
-      '  - Color / Typography Direction（配色とジャンプ率）',
-      '  - Action Hook（次の一手が浮かぶ一言）',
+      '  - Main Headline（日本語の強い言い切り。1つだけ）',
+      '  - Optional English Tag（1〜4語。飾りでなくタグ/断言として）',
+      '  - Lead Text（最大2行。結論の補助だけ）',
+      '  - Visual Direction（被写体は何か／どんな構図か／どこを大胆にクロップするか／01-03のコールアウトで視線をどこへ誘導するか／光と質感）',
+      '  - Layout Direction（グリッド・余白・非対称・主役の置き場所）',
+      '  - Color / Typography Direction（配色の意味づけと、見出し:本文のジャンプ率）',
+      '  - Action Hook（このスライドで視聴者の「次の一手」が頭に浮かぶ一言）',
     ].join('\n')
   }
   // standard
@@ -261,14 +278,15 @@ function buildAdditionalProhibitionsBlock(state: BuilderState): string {
 
 function buildFinalCheckBlock(): string {
   return [
-    '【Final Check（出力前の自己点検）】',
-    '・Goalに接続しているか。',
-    '・1スライド1メッセージか。',
-    '・見出しだけで流れが通るか。',
-    '・世界観プリセットから逸脱していないか。',
-    '・文字量が多すぎないか。',
-    '・画像内文字を要求していないか。',
-    '・最後に次の一手があるか。',
+    '【Final Check（出力前に必ず自己点検する）】',
+    '・表紙（1枚目）で視線と意識を奪えているか。文字だけで寂しくないか。',
+    '・見出しだけを追って「注意 → 感情 → 理解 → 行動」になっているか。',
+    '・最後がGoalに直結する具体的な一手で終わっているか。',
+    '・同じレイアウトTYPEが3枚以上続いていないか。クロップと縮尺に変化があるか。',
+    '・写真/図解が高級誌の水準か。ストックフォト感・テンプレ感・凡庸さがないか。',
+    '・世界観プリセットから逸脱していないか。配色・タイポのルールを守っているか。',
+    '・1スライド1メッセージか。本文が長すぎないか。見出しのジャンプ率は十分か。',
+    '・画像内に文字を焼き込んでいないか。Markdown記号を本文に入れていないか。',
   ].join('\n')
 }
 
@@ -281,6 +299,7 @@ export function compilePrompt(state: BuilderState, style: StylePreset): string {
     buildGoalBlock(state),
     buildInformationTransformBlock(),
     buildStoryArcBlock(state),
+    buildMetaphorBlock(style),
     `${DIVIDER}\n${buildStyleOSBlock(style, state)}\n${DIVIDER}`,
     buildArtDirectionBlock(),
     buildSlideRulesBlock(),
