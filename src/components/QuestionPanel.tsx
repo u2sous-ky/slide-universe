@@ -1,6 +1,6 @@
 // トップページ左カラム — 6つの設問（デザイン §3）
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Icon } from './Icon'
 import type { BuilderApi } from '../hooks/useBuilderState'
 import { USE_CASES, GOALS, IMPRESSIONS, OUTPUT_DEPTHS } from '../data/questions'
@@ -49,7 +49,7 @@ interface SectionProps {
 
 function Section({ icon, step, title, hint, help, children }: SectionProps) {
   return (
-    <section className="su-q">
+    <section className="su-q" id={`su-q-${step}`}>
       <div className="su-q__head">
         <span className="su-q__icon" aria-hidden="true">
           <Icon name={icon} size={18} />
@@ -73,6 +73,19 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
     [],
   )
 
+  // 選択したら次の設問へスッとスクロール（Q6などの見落とし防止）
+  const advanceTo = (step: number) => {
+    requestAnimationFrame(() => {
+      document
+        .getElementById(`su-q-${step}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }
+  // 世界観が決まったら（ライブラリ適用含む）Q6へ送る
+  useEffect(() => {
+    if (state.styleId) advanceTo(6)
+  }, [state.styleId])
+
   return (
     <div className="su-questions">
       <Section icon="description" step={1} title="どんな資料を作りますか？">
@@ -83,7 +96,10 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
               type="button"
               className={`su-chip${state.useCase === u.id ? ' is-selected' : ''}`}
               aria-pressed={state.useCase === u.id}
-              onClick={() => api.setUseCase(u.id)}
+              onClick={() => {
+                api.setUseCase(u.id)
+                advanceTo(2)
+              }}
             >
               {u.label}
             </button>
@@ -127,7 +143,10 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
               type="button"
               className={`su-chip${state.goal === g.id ? ' is-selected' : ''}`}
               aria-pressed={state.goal === g.id}
-              onClick={() => api.setGoal(g.id)}
+              onClick={() => {
+                api.setGoal(g.id)
+                advanceTo(4)
+              }}
             >
               {g.label}
             </button>
@@ -152,7 +171,10 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
                 className={`su-chip${selected ? ' is-selected' : ''}`}
                 aria-pressed={selected}
                 disabled={disabled}
-                onClick={() => api.toggleImpression(im.id)}
+                onClick={() => {
+                  api.toggleImpression(im.id)
+                  if (!selected) advanceTo(5)
+                }}
               >
                 {im.label}
               </button>
@@ -178,8 +200,13 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
             </button>
           </div>
         ) : (
-          <button type="button" className="su-style-teaser" onClick={onOpenLibrary}>
-            <span className="su-style-teaser__thumbs" aria-hidden="true">
+          <div className="su-style-teaser">
+            <button
+              type="button"
+              className="su-style-teaser__thumbs"
+              onClick={onOpenLibrary}
+              aria-label="世界観ライブラリを開く"
+            >
               {teaser.map((p) => (
                 <span
                   key={p.id}
@@ -187,12 +214,12 @@ export function QuestionPanel({ api, onOpenLibrary }: QuestionPanelProps) {
                   style={{ background: thumbBg(p) }}
                 />
               ))}
-            </span>
-            <span className="su-style-teaser__cta">
+            </button>
+            <button type="button" className="su-style-teaser__cta" onClick={onOpenLibrary}>
               <Icon name="palette" size={18} />
               すべての世界観を見る（{STYLE_PRESETS.length}スタイル）
-            </span>
-          </button>
+            </button>
+          </div>
         )}
       </Section>
 
