@@ -33,21 +33,26 @@
   display: block;
 }
 .su-logo {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   display: grid;
   place-items: center;
-  /* 惑星SVG自体がグラデ。タイルの箱は無し（いただいたロゴ同様に惑星が浮く） */
-  filter: drop-shadow(0 2px 8px rgba(124, 92, 240, 0.45));
+  /* 惑星SVG自体がグラデ。背景の箱は無し（完全透過で惑星が浮く） */
+  filter: drop-shadow(0 2px 10px rgba(124, 92, 240, 0.5));
+}
+.su-header__logo {
+  height: 30px;
+  width: auto;
+  display: block;
 }
 .su-header__titles {
   line-height: 1.25;
 }
 .su-header__title {
   margin: 0;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 800;
-  letter-spacing: 0.16em; /* ロゴの広いトラッキングに合わせる */
+  letter-spacing: 0.18em; /* ロゴの広いトラッキングに合わせる */
   color: #ffffff;
 }
 .su-header__subtitle {
