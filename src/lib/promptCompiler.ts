@@ -176,6 +176,25 @@ function buildSlideRulesBlock(): string {
   return ['【標準品質ルール（必ず守る）】', ...STANDARD_QUALITY_RULES.map((r) => `・${r}`)].join('\n')
 }
 
+// 全スタイル共通のアートディレクション基準（単調・凡庸な出力を防ぐ品質の底上げ）
+function buildArtDirectionBlock(): string {
+  return [
+    '【アートディレクション（全スタイル共通の品質基準）】',
+    '■ ビジュアルの質',
+    '・写真/イラスト/図解は、一流のアートディレクターが監修した高級エディトリアル誌の水準を目指す。ストックフォト感・テンプレ感・安っぽいクリップアートは禁止。',
+    '・写真を使う場合は、光源・影・質感・色のグレーディングを具体的に指定し、被写体の表情や所作までディレクションする。雑味のない、意図された一枚にする。',
+    '・各スライドの Visual Direction は「何を／どんな構図で／どこを大胆にクロップし／視線をどこへ誘導するか」まで具体的に書く。「美しい画像」「適切なイメージ」のような曖昧指示で終わらせない。',
+    '■ 単調を避ける（最重要）',
+    '・同じレイアウトTYPEを3枚以上連続させない。全面ビジュアル → テキスト主役 → 図解 を意図的に交互に配置し、視線のリズムを作る。',
+    '・クロップと縮尺に変化をつける。極端な寄り（顔/手/部分）と大きな引き（全景）を混ぜ、毎スライド同じ構図にしない。',
+    '・見出しと本文のジャンプ率を極端につける。中途半端なサイズを禁止。余白を恐れない。',
+    '・1スライドに置く主役要素は1つだけ。脇役は徹底して抑え、密度のメリハリを作る。',
+    '■ 一貫性と密度',
+    '・シリーズ全体で、一流のビジネス/カルチャーメディアの特集記事をそのままスライド化したような、一貫したトーンと強弱を保つ。',
+    '・各スライドは「見た瞬間に意図が立ち上がる」密度を持たせる（ただし1スライド1メッセージは死守）。',
+  ].join('\n')
+}
+
 // タイポグラフィ品位ガード（日本語・英語ともに字形の美しさを崩さない）
 function buildTypographyGuard(): string {
   return [
@@ -263,6 +282,7 @@ export function compilePrompt(state: BuilderState, style: StylePreset): string {
     buildInformationTransformBlock(),
     buildStoryArcBlock(state),
     `${DIVIDER}\n${buildStyleOSBlock(style, state)}\n${DIVIDER}`,
+    buildArtDirectionBlock(),
     buildSlideRulesBlock(),
     buildTypographyGuard(),
     buildOutputFormatBlock(state.outputDepth, state.detailSettings.slideCount),
