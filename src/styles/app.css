@@ -50,10 +50,14 @@
 }
 .su-header__title {
   margin: 0;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 0.18em; /* ロゴの広いトラッキングに合わせる */
+  /* 公式ロゴのワードマーク（幾何学サンセリフ・SemiBold・ワイドトラッキング） */
+  font-family: 'Montserrat', var(--font-base);
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
   color: #ffffff;
+  /* 末尾の余白側にも字間を効かせて中央を保つ */
+  padding-left: 0.2em;
 }
 .su-header__subtitle {
   margin: 0;
