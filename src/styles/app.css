@@ -27,6 +27,11 @@
   align-items: center;
   gap: 12px;
 }
+.su-header__logo {
+  height: 30px;
+  width: auto;
+  display: block;
+}
 .su-logo {
   width: 36px;
   height: 36px;
