@@ -3,7 +3,8 @@ import react from '@vitejs/plugin-react'
 
 // GitHub Pages はレスポンスヘッダを設定できないため、本番ビルド時のみ CSP を <meta> で注入する。
 // dev では Vite が inline スクリプト/HMR を使うため注入しない（apply: 'build'）。
-// GTM(GTM-KT2FHLQQ) / GA4 を許可。inlineブートストラップのため script-src に 'unsafe-inline'。
+// GA4 gtag.js(G-7B4S8SJENY) を許可。inlineブートストラップのため script-src に 'unsafe-inline'。
+// gtag.jsは googletagmanager.com から配信され、計測送信は google-analytics.com 宛て。
 // 許可は Google の計測ドメインのみに限定し、それ以外は 'self' を維持する。
 const CSP =
   "default-src 'self'; " +

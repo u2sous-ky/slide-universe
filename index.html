@@ -5,15 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- CSPは本番ビルド時にvite.config.tsのプラグインが注入する（devを壊さないため） -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      name="description"
+      content="SLIDE UNIVERSE — 6つの設問に答えるだけで、41の世界観から選んだ高品質なスライド生成プロンプトを作成。NotebookLM等にそのまま使えます。"
+    />
+    <meta name="theme-color" content="#e8eaf2" />
+    <link rel="canonical" href="https://slideuniverse.teklife.jp/" />
+    <!-- 構造化データ（SoftwareApplication / SEO） -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "SLIDE UNIVERSE",
+        "url": "https://slideuniverse.teklife.jp/",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Web",
+        "inLanguage": "ja",
+        "description": "6つの設問に答えるだけで、41の世界観から選んだ高品質なスライド生成プロンプトを作成。NotebookLM等にそのまま使えます。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+      }
+    </script>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Open Graph / Twitter -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="SLIDE UNIVERSE — 伝わる構造と、惹き込む世界観をつくる。" />
+    <meta
+      property="og:description"
+      content="6つの設問に答えるだけで、41の世界観から高品質なスライド生成プロンプトを作成。"
+    />
+    <meta property="og:url" content="https://slideuniverse.teklife.jp/" />
+    <meta property="og:image" content="https://slideuniverse.teklife.jp/apple-touch-icon.png" />
+    <meta name="twitter:card" content="summary" />
     <title>SLIDE UNIVERSE — 伝わる構造と、惹き込む世界観をつくる。</title>
+    <!-- クリックジャッキング対策: GH Pagesはframe-ancestorsヘッダを送れないためJSで防ぐ（他サイトのiframe埋め込みを拒否） -->
+    <script>if (self !== top) { try { top.location = self.location } catch (e) { document.documentElement.style.display = 'none' } }</script>
     <!-- CSP(meta)はビルド時に</title>直前へ注入されるため、GTMはその後に置く（CSPが効く順序にする） -->
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-KT2FHLQQ');</script>
-    <!-- End Google Tag Manager -->
+    <!-- Google Consent Mode v2: 既定は全拒否（同意するまでGA4はCookieレス＝GDPR/ePrivacyのオプトイン） -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        wait_for_update: 500
+      });
+      try {
+        if (localStorage.getItem('su.cookie-consent') === 'accepted') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+      } catch (e) {}
+    </script>
+    <!-- Google Analytics 4 (gtag.js) — Consent Mode連動。同意するまで分析Cookieは設定されない -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7B4S8SJENY"></script>
+    <script>
+      gtag('js', new Date());
+      gtag('config', 'G-7B4S8SJENY');
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,10 +77,6 @@
     />
   </head>
   <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KT2FHLQQ"
-      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
