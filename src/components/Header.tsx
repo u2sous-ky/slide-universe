@@ -43,15 +43,7 @@ export function Header({
           <Icon name="transform" size={18} />
           PPTX変換
         </button>
-        <button
-          type="button"
-          className="su-btn su-btn--ghost"
-          onClick={onOpenBrand}
-          title="AIに一般論を書かせないブランド前提（brand.md）"
-        >
-          <Icon name="fingerprint" size={18} filled={brandActive} />
-          ブランド{brandActive ? '・設定済' : ''}
-        </button>
+        {/* 「ブランド」ボタンは一旦非表示（上級者向け）。BrandModal本体とprops/stateは残置＝復活はこのボタンを戻すだけ。 */}
         <button type="button" className="su-btn su-btn--ghost" onClick={onOpenFavorites}>
           <Icon name="star" size={18} filled={favoritesCount > 0} />
           お気に入り{favoritesCount > 0 ? `（${favoritesCount}）` : ''}

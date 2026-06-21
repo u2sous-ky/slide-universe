@@ -956,10 +956,12 @@
   line-height: 1.6;
   color: var(--color-muted);
 }
-.su-convert__pre {
+/* 両クラス指定で .su-prompt-text(後方定義) の min-height:0/flex:1 1 auto に勝たせる
+   （単一クラス同士だと後勝ちで枠が0に潰れていた） */
+.su-prompt-text.su-convert__pre {
   flex: 0 0 auto;
   min-height: 220px;
-  max-height: 300px;
+  max-height: 320px;
 }
 
 /* ── 生成プロンプトモーダル ───────────────────────────── */
@@ -1352,7 +1354,10 @@
 .su-header__actions .su-btn {
   border: none;
   color: #fff;
-  background: var(--su-grad-main);
+  /* 回文グラデ（両端を同色に）＋横長サイズで、background-position移動を継ぎ目なく流せる */
+  background: linear-gradient(135deg, #9d5cff 0%, #6577ff 28%, #39d7e8 50%, #6577ff 72%, #9d5cff 100%);
+  background-size: 220% 220%;
+  background-position: 0% 50%;
   box-shadow: 0 10px 22px rgba(101, 119, 255, 0.26), 0 6px 16px rgba(57, 215, 232, 0.16);
   min-width: 160px; /* お気に入り（件数つき）が収まる幅に揃え、2ボタンを同幅に */
   justify-content: center;
@@ -1360,6 +1365,12 @@
 .su-header__actions .su-btn:hover {
   transform: translateY(-1px);
   filter: saturate(1.06) brightness(1.02);
+  /* ホバーした瞬間に1回だけギュイーンとスライド（リピートしない・終端で停止） */
+  animation: su-grad-flow 0.6s ease-out forwards;
+}
+@keyframes su-grad-flow {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
 }
 .su-header__actions .su-btn:active {
   transform: translateY(1px);
