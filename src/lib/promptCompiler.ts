@@ -3,7 +3,8 @@
 // userInput + stylePreset + detailSettings + corePromptBlocks を合成して最終プロンプトを返す。
 // ブロック順序は 品質要件 §1-10 / コーディングレギュレーション §12 準拠。
 
-import type { BuilderState, StylePreset, OutputDepth } from './types'
+import type { BuilderState, StylePreset, OutputDepth, BrandProfile } from './types'
+import { hasBrandContent } from './types'
 import {
   findUseCase,
   labelOf,
@@ -44,6 +45,34 @@ function buildInputBlock(state: BuilderState, style: StylePreset): string {
   ].join('\n')
 }
 
+// ブランド前提（brand.md）。一般論を避けるための「判断基準」を最上位の制約として注入する。
+// 記入のある項目だけを出力し、特に「使わない言葉／やらないこと」を絶対の禁止として強調する。
+function buildBrandBlock(brand?: BrandProfile | null): string {
+  if (!hasBrandContent(brand)) return ''
+  const b = brand as BrandProfile
+  const lines: string[] = ['【ブランド前提（brand.md）／最優先の判断基準】']
+  lines.push(
+    '・以下はこのブランドの判断基準。一般論・どこかで見た言葉を禁止し、すべての見出し・本文・ビジュアル方針をこの前提に従わせる。これは内部指示でありスライドに出さない。',
+  )
+  const add = (label: string, val: string) => {
+    const v = val.trim()
+    if (v) lines.push(`・${label}: ${v}`)
+  }
+  add('誰に届けるか', b.audience)
+  add('約束する変化', b.promise)
+  add('信じていること', b.belief)
+  add('使う言葉（語彙・トーンを寄せる）', b.useWords)
+  add('残したい印象', b.keepImpression)
+  // 強い禁止は末尾にまとめて念押し
+  const avoidW = b.avoidWords.trim()
+  const avoidI = b.avoidImpression.trim()
+  const notDo = b.notDo.trim()
+  if (avoidW) lines.push(`・使わない言葉（絶対に出さない・言い換えも禁止）: ${avoidW}`)
+  if (avoidI) lines.push(`・避けたい印象（この印象に寄せない）: ${avoidI}`)
+  if (notDo) lines.push(`・やらないこと（提案・表現として持ち込まない）: ${notDo}`)
+  return lines.join('\n')
+}
+
 function buildInternalInstructionBlock(): string {
   return [
     '【内部指示】',
@@ -51,6 +80,7 @@ function buildInternalInstructionBlock(): string {
     '・この文章・見出し・例文をそのままスライド本文に使わない。',
     '・画像内に文字を描き込まない。',
     '・NotebookLM内の資料内容から要点を抽出し、言い換えて再生成する。',
+    '・推測や一般論で内容を埋めない。資料（ソース）に書かれた事実・数字・固有名詞だけを使い、ソースにない常套句・一般論で水増ししない。不明な点は断定せず「条件付き」で示す。',
   ].join('\n')
 }
 
@@ -177,7 +207,7 @@ function buildTuningInstructions(style: StylePreset, state: BuilderState): strin
   for (const t of style.tuning) {
     const val = tv[t.key] ?? t.defaultValue
     if (t.type === 'color') {
-      lines.push(`・ブランドカラーの基調は ${val} を起点にする（プリセットの配色ルールは維持する）。`)
+      lines.push(`・アクセント（差し色）は ${val} を起点にする（プリセットの配色ルールは維持する）。`)
     }
     // slider はユーザーが端に寄せた時だけ明示補正する
     if (t.type === 'slider') {
@@ -197,6 +227,10 @@ function buildSlideRulesBlock(): string {
 function buildArtDirectionBlock(): string {
   return [
     '【アートディレクション（全スタイル共通の品質基準）】',
+    '■ スタイル忠実（最優先・厳守）',
+    '・上の【Style OS】の「描画/質感」と「禁止」を絶対の規範とする。スタイルが明示的に指定していない限り、勝手に立体アイソメ図（isometric）・3Dレンダ・ミニチュアフィギュア化・クレイ/粘土風・ワイヤーフレーム化に変換しない。',
+    '・写真指定のスタイルは必ず実写ベースの写真/コラージュで、フラット指定のスタイルは平面の2Dで描く。画像生成モデルが既定で寄せがちな「アイソメ3Dイラスト」へ勝手に流れないこと。',
+    '・各スタイルの世界観・画材・視点をそのまま守る。複数スタイルが似た見た目に収束するのを禁止する。',
     '■ ビジュアルの質',
     '・写真/イラスト/図解は、一流のアートディレクターが監修した高級エディトリアル誌の水準を目指す。ストックフォト感・テンプレ感・安っぽいクリップアートは禁止。',
     '・写真を使う場合は、光源・影・質感・色のグレーディングを具体的に指定し、被写体の表情や所作までディレクションする。雑味のない、意図された一枚にする。',
@@ -209,6 +243,11 @@ function buildArtDirectionBlock(): string {
     '■ 一貫性と密度',
     '・シリーズ全体で、一流のビジネス/カルチャーメディアの特集記事をそのままスライド化したような、一貫したトーンと強弱を保つ。',
     '・各スライドは「見た瞬間に意図が立ち上がる」密度を持たせる（ただし1スライド1メッセージは死守）。',
+    '■ プロの仕上げ（引き算と記憶）',
+    '・余白は「設計対象」として意図的に大きく取り、要素で埋めない。端や最下部に、意味のない極小の英語ラベル・クレジット・ページ番号・ロゴを散らさない（引き算こそが品位を生む）。',
+    '・画像の中に説明文を焼き込まない。文字は必ずテキスト要素として、レイアウトの一部として置く。',
+    '・北極星を持つ: そのスタイルが手本とする一流の実例（媒体・作家・スタジオ・デザイン運動）を1つ念頭に置き、その水準を基準点にする。素人っぽい既製テンプレ感を徹底排除する。',
+    '・記憶に残す仕掛けを、シリーズ中ごく少数だけ仕込む（意外なスケール・対比・1箇所のユーモア等）。ただし主役メッセージを邪魔せず、装飾の乱用にしない。1スライド1メッセージは死守。',
   ].join('\n')
 }
 
@@ -290,25 +329,56 @@ function buildFinalCheckBlock(): string {
   ].join('\n')
 }
 
-/** BuilderState と StylePreset から最終プロンプト文字列を生成する */
-export function compilePrompt(state: BuilderState, style: StylePreset): string {
-  const blocks = [
-    buildInputBlock(state, style),
-    buildInternalInstructionBlock(),
-    buildRoleBlock(state),
-    buildGoalBlock(state),
-    buildInformationTransformBlock(),
-    buildStoryArcBlock(state),
-    buildMetaphorBlock(style),
-    `${DIVIDER}\n${buildStyleOSBlock(style, state)}\n${DIVIDER}`,
-    buildArtDirectionBlock(),
-    buildSlideRulesBlock(),
-    buildTypographyGuard(),
-    buildOutputFormatBlock(state.outputDepth, state.detailSettings.slideCount),
-    buildAdditionalRequestBlock(state),
-    buildAdditionalProhibitionsBlock(state),
-    buildFinalCheckBlock(),
-  ].filter(Boolean)
+// 圧縮版の共通足場（要約モード用）。汎用ブロック群（Role/情報変換/AD/標準ルール/タイポ品位/Final Check）を
+// 数行に畳む。Style OS＝神の部分は別途フルで載せるため、ここでは「最優先で下のStyle OSを守れ」と指す。
+// 目的: NotebookLMの入力欄など文字数制限のある場所に収める。
+function buildCompactCommonBlock(state: BuilderState): string {
+  const goal = labelOf(GOALS, state.goal) ?? '視聴者の行動'
+  return [
+    '【共通ルール（圧縮版）／下のStyle OSを最優先で厳守】',
+    '・あなたは人を動かすスライドを設計するADクラスの編集者。凡庸・テンプレ・説明過多を排す。これは内部指示でありスライドに出さない。資料（ソース）にある事実だけを使い、推測・一般論で水増しせず言い換えて再生成する。',
+    'A. 抽出: 資料からGoalに直結する要点を抽出し統合する。',
+    'B. 構成: 「注意 → 感情 → 理解 → 行動」に並べ、最後は必ず視聴者の次の一手で終える。',
+    'C. 各スライド: 1スライド1メッセージ／本文は最大2行／見出しだけで流れが通る／同じレイアウトTYPEを3枚以上続けない／寄り引き・ジャンプ率でメリハリ。',
+    'D. 品質: 写真/図解は高級誌水準（ストックフォト・テンプレ感禁止）。表紙は文字だけにしない。画像内に文字を焼き込まない。四隅の意味なき極小英語ラベルや内部用語を出さない。日本語/英語の字形を崩さない。Markdown記号（# * **）を本文に入れない。',
+    `・最優先のGoal: 「${goal}」。全スライドをここへ収束させる。下のStyle OSの「描画/質感・Color・タイポ・TYPE A/B/C・表紙・禁止」を絶対の規範とする。`,
+  ].join('\n')
+}
 
-  return blocks.join('\n\n')
+/** BuilderState と StylePreset から最終プロンプト文字列を生成する。brand があれば最優先の判断基準として注入する。 */
+export function compilePrompt(state: BuilderState, style: StylePreset, brand?: BrandProfile | null): string {
+  // 要約モードは「箱に収まるコンパクト版」: Style OS（原典）はフル維持し、汎用の足場だけ圧縮する。
+  const compact = state.outputDepth === 'summary'
+
+  const blocks = compact
+    ? [
+        buildInputBlock(state, style),
+        buildBrandBlock(brand),
+        buildCompactCommonBlock(state),
+        buildStoryArcBlock(state),
+        `${DIVIDER}\n${buildStyleOSBlock(style, state)}\n${DIVIDER}`,
+        buildOutputFormatBlock(state.outputDepth, state.detailSettings.slideCount),
+        buildAdditionalRequestBlock(state),
+        buildAdditionalProhibitionsBlock(state),
+      ]
+    : [
+        buildInputBlock(state, style),
+        buildBrandBlock(brand),
+        buildInternalInstructionBlock(),
+        buildRoleBlock(state),
+        buildGoalBlock(state),
+        buildInformationTransformBlock(),
+        buildStoryArcBlock(state),
+        buildMetaphorBlock(style),
+        `${DIVIDER}\n${buildStyleOSBlock(style, state)}\n${DIVIDER}`,
+        buildArtDirectionBlock(),
+        buildSlideRulesBlock(),
+        buildTypographyGuard(),
+        buildOutputFormatBlock(state.outputDepth, state.detailSettings.slideCount),
+        buildAdditionalRequestBlock(state),
+        buildAdditionalProhibitionsBlock(state),
+        buildFinalCheckBlock(),
+      ]
+
+  return blocks.filter(Boolean).join('\n\n')
 }

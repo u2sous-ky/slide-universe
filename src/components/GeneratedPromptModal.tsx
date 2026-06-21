@@ -4,14 +4,17 @@
 import { useState } from 'react'
 import { Icon } from './Icon'
 import { useModalA11y } from '../hooks/useModalA11y'
+import { track } from '../lib/analytics'
 
 interface GeneratedPromptModalProps {
   open: boolean
   prompt: string
   onClose: () => void
+  /** 指定時のみ「再編集」ボタンを表示（お気に入りから開いたとき用） */
+  onReedit?: () => void
 }
 
-export function GeneratedPromptModal({ open, prompt, onClose }: GeneratedPromptModalProps) {
+export function GeneratedPromptModal({ open, prompt, onClose, onReedit }: GeneratedPromptModalProps) {
   const ref = useModalA11y(open, onClose)
   const [copied, setCopied] = useState(false)
 
@@ -29,6 +32,7 @@ export function GeneratedPromptModal({ open, prompt, onClose }: GeneratedPromptM
     }
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+    track('copy_prompt', { chars: prompt.length })
   }
 
   if (!open) return null
@@ -58,6 +62,12 @@ export function GeneratedPromptModal({ open, prompt, onClose }: GeneratedPromptM
           <button type="button" className="su-btn su-btn--ghost" onClick={onClose}>
             閉じる
           </button>
+          {onReedit && (
+            <button type="button" className="su-btn su-btn--ghost" onClick={onReedit}>
+              <Icon name="edit" size={18} />
+              再編集する
+            </button>
+          )}
           <button type="button" className="su-btn su-btn--primary" onClick={copy}>
             <Icon name={copied ? 'check' : 'content_copy'} size={18} />
             {copied ? 'コピーしました' : 'コピーする'}

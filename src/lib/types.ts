@@ -71,6 +71,15 @@ export interface BuilderState {
   detailSettings: DetailSettings
 }
 
+/** お気に入り保存した「自分のセッティング」1件（localStorage 永続化用） */
+export interface SavedSetting {
+  id: string
+  name: string
+  createdAt: number
+  /** 再編集できるよう、入力状態をまるごとスナップショットする */
+  state: BuilderState
+}
+
 export const DEFAULT_DETAIL_SETTINGS: DetailSettings = {
   slideCount: 'auto',
   additionalRequest: '',
@@ -86,4 +95,38 @@ export const INITIAL_BUILDER_STATE: BuilderState = {
   tuning: {},
   outputDepth: null,
   detailSettings: DEFAULT_DETAIL_SETTINGS,
+}
+
+/**
+ * ブランド前提（brand.md）。AIに一般論を書かせないための「判断基準」を1枚化したもの。
+ * 全生成に共通で効く永続レイヤー（localStorage）。見た目方針は世界観プリセットが担うため、
+ * ここは「言葉と立場」のレイヤーに絞る。空欄はプロンプトに出さない。
+ */
+export interface BrandProfile {
+  audience: string // 誰に届けるか
+  promise: string // 約束する変化
+  belief: string // 信じていること
+  useWords: string // 使う言葉
+  avoidWords: string // 使わない言葉（特に効く）
+  keepImpression: string // 残したい印象
+  avoidImpression: string // 避けたい印象
+  notDo: string // やらないこと（特に効く）
+}
+
+export const BRAND_STORAGE_KEY = 'su.brand'
+
+export const EMPTY_BRAND: BrandProfile = {
+  audience: '',
+  promise: '',
+  belief: '',
+  useWords: '',
+  avoidWords: '',
+  keepImpression: '',
+  avoidImpression: '',
+  notDo: '',
+}
+
+/** どれか1項目でも記入があれば true（空のブランドはプロンプトへ注入しない） */
+export function hasBrandContent(b: BrandProfile | null | undefined): boolean {
+  return !!b && Object.values(b).some((v) => typeof v === 'string' && v.trim() !== '')
 }

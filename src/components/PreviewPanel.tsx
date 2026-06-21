@@ -5,7 +5,8 @@ import { Fragment } from 'react'
 import { Icon } from './Icon'
 import type { BuilderApi } from '../hooks/useBuilderState'
 import { findUseCase, labelOf, GOALS, IMPRESSIONS, OUTPUT_DEPTHS } from '../data/questions'
-import { getPreset, thumbBg } from '../data/stylePresets'
+import { getPreset } from '../data/stylePresets'
+import { StyleThumbStrip } from './StyleThumbStrip'
 import { getReadiness, getRemainingCount, isReadyToGenerate } from '../lib/validation'
 import { STANDARD_QUALITY_RULES } from '../lib/promptCompiler'
 
@@ -13,6 +14,7 @@ interface PreviewPanelProps {
   api: BuilderApi
   onGenerate: () => void
   onOpenDetail: () => void
+  onSaveSetting: () => void
 }
 
 interface CardProps {
@@ -35,7 +37,7 @@ function PreviewCard({ icon, title, active, children }: CardProps) {
   )
 }
 
-export function PreviewPanel({ api, onGenerate, onOpenDetail }: PreviewPanelProps) {
+export function PreviewPanel({ api, onGenerate, onOpenDetail, onSaveSetting }: PreviewPanelProps) {
   const { state } = api
   const useCase = findUseCase(state.useCase)
   const style = getPreset(state.styleId)
@@ -100,12 +102,8 @@ export function PreviewPanel({ api, onGenerate, onOpenDetail }: PreviewPanelProp
         <PreviewCard icon="palette" title="選択中の世界観" active={styleActive}>
           {style ? (
             <div className="su-pstyle">
-              <span
-                className="su-pstyle__thumb"
-                style={{ background: thumbBg(style) }}
-                aria-hidden="true"
-              />
-              <div>
+              <StyleThumbStrip style={style} />
+              <div className="su-pstyle__meta">
                 <div className="su-pstyle__name">{style.name}</div>
                 <div className="su-pstyle__tags">
                   {style.impressions.slice(0, 3).map((t) => (
@@ -162,6 +160,15 @@ export function PreviewPanel({ api, onGenerate, onOpenDetail }: PreviewPanelProp
         >
           <Icon name="bolt" size={20} filled />
           {ready ? 'プロンプトを生成する' : `あと${remaining}項目で生成できます`}
+        </button>
+        <button
+          type="button"
+          className="su-btn su-btn--ghost su-btn--block su-btn--save"
+          disabled={!styleActive}
+          onClick={onSaveSetting}
+        >
+          <Icon name="star" size={18} />
+          この設定をお気に入り保存
         </button>
         {!ready && (
           <p className="su-preview__note">6つの設問をすべて入力すると生成できます。</p>

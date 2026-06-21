@@ -43,6 +43,8 @@ export function useBuilderState() {
     (d: DetailSettings) => setState((s) => ({ ...s, detailSettings: d })),
     [],
   )
+  // 保存済みセッティングからの「再編集」用に、入力状態をまるごと差し替える
+  const restoreState = useCallback((next: BuilderState) => setState(next), [])
 
   return {
     state,
@@ -53,6 +55,7 @@ export function useBuilderState() {
     setStyle,
     setOutputDepth,
     setDetailSettings,
+    restoreState,
   }
 }
 

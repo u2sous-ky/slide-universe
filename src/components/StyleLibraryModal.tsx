@@ -4,6 +4,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Icon } from './Icon'
 import { useModalA11y } from '../hooks/useModalA11y'
+import { useFavorites } from '../hooks/useFavorites'
+import { StylePreviewSlider } from './StylePreviewSlider'
 import { tuningParamsFor, initTuning, type TuningValues } from '../lib/tuning'
 import {
   STYLE_PRESETS,
@@ -57,12 +59,15 @@ export function StyleLibraryModal({
   const [colorTone, setColorTone] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState<SortKey>('category')
+  const [favOnly, setFavOnly] = useState(false)
+  const { isFavorite, toggle: toggleFav, count: favCount } = useFavorites()
 
   const impressions = useMemo(() => allImpressions(), [])
   const colorTones = useMemo(() => allColorTones(), [])
 
   const filtered = useMemo(() => {
     let list = STYLE_PRESETS.filter((p) => {
+      if (favOnly && !isFavorite(p.id)) return false
       if (category !== 'all' && p.category !== category) return false
       if (impression && !p.impressions.includes(impression)) return false
       if (colorTone && !p.colorTones.includes(colorTone)) return false
@@ -81,7 +86,7 @@ export function StyleLibraryModal({
       )
     }
     return list
-  }, [category, impression, colorTone, search, sort])
+  }, [category, impression, colorTone, search, sort, favOnly, isFavorite])
 
   const focused: StylePreset | undefined = getPreset(focusId) ?? filtered[0]
 
@@ -104,6 +109,7 @@ export function StyleLibraryModal({
     setImpression(null)
     setColorTone(null)
     setSearch('')
+    setFavOnly(false)
   }
 
   const previewStyle = getPreset(previewId)
@@ -131,6 +137,18 @@ export function StyleLibraryModal({
         <div className="su-library">
           {/* 左: 絞り込み */}
           <aside className="su-library__filters">
+            <div className="su-filter-group">
+              <button
+                type="button"
+                className={`su-filter su-filter--fav${favOnly ? ' is-on' : ''}`}
+                aria-pressed={favOnly}
+                onClick={() => setFavOnly((v) => !v)}
+              >
+                <Icon name="star" size={16} filled={favOnly} />
+                お気に入りだけ{favCount > 0 ? `（${favCount}）` : ''}
+              </button>
+            </div>
+
             <div className="su-filter-group">
               <div className="su-filter-group__head">
                 <span>カテゴリ</span>
@@ -237,6 +255,18 @@ export function StyleLibraryModal({
                     )}
                     <button
                       type="button"
+                      className={`su-card__fav${isFavorite(p.id) ? ' is-on' : ''}`}
+                      aria-label={`${p.name} をお気に入り${isFavorite(p.id) ? 'から外す' : 'に追加'}`}
+                      aria-pressed={isFavorite(p.id)}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        toggleFav(p.id)
+                      }}
+                    >
+                      <Icon name="star" size={18} filled={isFavorite(p.id)} />
+                    </button>
+                    <button
+                      type="button"
                       className="su-card__zoom"
                       aria-label={`${p.name} のプレビューを拡大`}
                       onClick={(e) => {
@@ -258,7 +288,11 @@ export function StyleLibraryModal({
                 </div>
               ))}
               {filtered.length === 0 && (
-                <p className="su-muted su-cards__empty">条件に合う世界観がありません。</p>
+                <p className="su-muted su-cards__empty">
+                  {favOnly && favCount === 0
+                    ? 'お気に入りがまだありません。カードの星マークを押すと登録できます。'
+                    : '条件に合う世界観がありません。'}
+                </p>
               )}
             </div>
           </div>
@@ -384,7 +418,7 @@ export function StyleLibraryModal({
           <button type="button" className="su-iconbtn" aria-label="閉じる" onClick={() => setPreviewId(null)}>
             <Icon name="close" size={22} />
           </button>
-          <div className="su-lightbox__thumb" style={{ background: thumbBg(previewStyle) }} />
+          <StylePreviewSlider style={previewStyle} />
           <div className="su-lightbox__meta">
             <h3 className="su-lightbox__name">{previewStyle.name}</h3>
             <p className="su-lightbox__en">{previewStyle.nameEn}</p>

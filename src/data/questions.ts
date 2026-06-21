@@ -102,7 +102,7 @@ export const OUTPUT_DEPTHS: OutputDepthOption[] = [
   {
     id: 'summary',
     label: '要約プロンプト',
-    hint: '構成と要点だけを簡潔に。素早く全体像をつかみたい時に。',
+    hint: '足場を圧縮した短縮版。NotebookLMの入力欄など文字数制限のある場所に貼りたい時に（世界観の指定はフルで保持）。',
   },
   {
     id: 'standard',
